@@ -61,7 +61,8 @@ const css = `
 `;
 
 function Column({ cat, items }) {
-  const blurFrom = Math.ceil(items.length * 0.75);
+  // Altijd minimaal 1 item blurred, ook bij kleine lijsten
+  const visibleCount = items.length <= 1 ? 0 : Math.max(1, Math.floor(items.length * 0.75));
   return (
     <div className="col">
       <div className="ch">
@@ -72,7 +73,7 @@ function Column({ cat, items }) {
       {items.length === 0
         ? <p className="em">Niets hier</p>
         : items.map((t, i) => (
-          <div key={i} className="ti" style={i >= blurFrom ? { filter: "blur(5px)", userSelect: "none", pointerEvents: "none", opacity: 0.5 } : {}}>
+          <div key={i} className="ti" style={i >= visibleCount ? { filter: "blur(5px)", userSelect: "none", pointerEvents: "none", opacity: 0.5 } : {}}>
             <div className="td" style={{ background: cat.color }} />
             <span>{t}</span>
           </div>
